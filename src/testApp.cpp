@@ -1,27 +1,26 @@
 #include "testApp.h"
 
+#define UI_HEIGHT 100
+#define UI_BUTTON_NAME_LOAD "LOAD IMAGE"
+
 void testApp::setup(){
 	
 	// initialise gui
-	float dim = 32;
-	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float length = 320-xInit;
-    
-    gui = new ofxUICanvas(0,0,length+xInit,ofGetHeight());
-	gui->addLabelButton("LOAD IMAGE", false);
-    
+    gui = new ofxUICanvas(0,ofGetHeight()-UI_HEIGHT,ofGetWidth(),UI_HEIGHT);
+	gui->setFont("GUI/Inconsolata.ttf", false, true, false, 300);
+    gui->setFontSize(OFX_UI_FONT_LARGE, 10);
+	gui->setFontSize(OFX_UI_FONT_MEDIUM, 6);
+    gui->setFontSize(OFX_UI_FONT_SMALL, 4);
+	gui->addLabelButton(UI_BUTTON_NAME_LOAD, false);
+    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 	
+	ofBackgroundHex(0x000000);
 }
 
-//--------------------------------------------------------------
-void testApp::update(){
-	
-}
+void testApp::update(){}
 
 //--------------------------------------------------------------
-void testApp::draw() {
-	ofDrawBitmapString("Press spacebar to open an image, \"s\" to save the processed output", 20, 15);
-	
+void testApp::draw() {	
 	
 	for (int i=0; i<loadedImages.size(); i++){
 		loadedImages[i].draw(0, 20);
@@ -30,43 +29,6 @@ void testApp::draw() {
 	for (int i=0; i<processedImages.size(); i++){
 		processedImages[i].draw(processedImages[i].getWidth(), 20);
 	}
-	
-}
-
-void testApp::keyReleased(int key){
-	
-	if (key == ' '){
-		
-		//Open the Open File Dialog
-		ofFileDialogResult openFileResult= ofSystemLoadDialog("Select a jpg or png"); 
-		
-		//Check if the user opened a file
-		if (openFileResult.bSuccess){
-			
-			ofLogVerbose("User selected a file");
-			
-			//We have a file, check it and process it
-			processOpenFileSelection(openFileResult);
-			
-		}else {
-			ofLogVerbose("User hit cancel");
-		}
-	}
-	
-	if (key == 's'){
-		
-		if (processedImages.size()==0){
-			//User is trying to save without anything to output - bail
-			return;
-		}
-		
-		//
-		ofFileDialogResult saveFileResult = ofSystemSaveDialog(ofGetTimestampString() + "." + ofToLower(originalFileExtension), "Save your file");
-		if (saveFileResult.bSuccess){
-			processedImages[0].saveImage(saveFileResult.filePath);
-		}
-	}
-	
 	
 }
 
@@ -140,4 +102,17 @@ void testApp::processOpenFileSelection(ofFileDialogResult openFileResult){
 		}
 	}
 	
+}
+
+void testApp::presentFileChooser(){
+	ofFileDialogResult openFileResult= ofSystemLoadDialog("Select a jpg or png");
+	processOpenFileSelection(openFileResult);
+}
+
+void testApp::guiEvent(ofxUIEventArgs &e) {
+	string name = e.widget->getName();
+	if(name == UI_BUTTON_NAME_LOAD) {
+        ofxUILabelButton *button = (ofxUILabelButton *) e.widget;
+		if (button->getValue()==0) presentFileChooser();
+	}
 }

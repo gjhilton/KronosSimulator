@@ -8,12 +8,10 @@
 
 class testApp : public ofBaseApp{
 
-	public:
+public:
 		void setup();
 		void update();
 		void draw();
-
-		void keyReleased(int key);
 	
 		void processOpenFileSelection(ofFileDialogResult openFileResult);
 		//bool sortColorFunction (ofColor i,ofColor j);
@@ -21,5 +19,8 @@ class testApp : public ofBaseApp{
 	vector<ofImage>processedImages;
 	string originalFileExtension;
 	
-	ofxUICanvas *gui; 
+	ofxUICanvas *gui;
+	void guiEvent(ofxUIEventArgs &e);
+	
+	void presentFileChooser();
 };
