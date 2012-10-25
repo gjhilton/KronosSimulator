@@ -1,10 +1,4 @@
-
 *.xcuserstate
+.DS_Store
 
-*.xcuserstate
-
-KronosSimulator.xcodeproj/project.xcworkspace/xcuserdata/gjh.xcuserdatad/UserInterfaceState.xcuserstate
-
-*.xcuserstate
-
-bin/.DS_Store
+/bin/KronosSimulatorDebug.app/*

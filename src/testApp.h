@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-
+#include "ofxUI.h"
 
 
 
@@ -20,4 +20,6 @@ class testApp : public ofBaseApp{
 	vector<ofImage>loadedImages;
 	vector<ofImage>processedImages;
 	string originalFileExtension;
+	
+	ofxUICanvas *gui; 
 };

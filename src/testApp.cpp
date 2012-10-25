@@ -1,7 +1,16 @@
 #include "testApp.h"
 
 void testApp::setup(){
-	ofSetLogLevel(OF_LOG_VERBOSE);
+	
+	// initialise gui
+	float dim = 32;
+	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
+    float length = 320-xInit;
+    
+    gui = new ofxUICanvas(0,0,length+xInit,ofGetHeight());
+	gui->addLabelButton("LOAD IMAGE", false);
+    
+	
 }
 
 //--------------------------------------------------------------
