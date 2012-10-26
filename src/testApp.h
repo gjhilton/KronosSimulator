@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxUI.h"
+#include "ofxGui.h"
 
 class testApp : public ofBaseApp{
 
@@ -12,15 +12,9 @@ public:
 	void draw();
 	
 private:
-	void presentFileChooser();
+	void framerateChanged(int & rate);
+	void presentFileChooser(bool & pressed);
 	void processOpenFileSelection(ofFileDialogResult openFileResult);
-	
-	ofxUICanvas *gui;
-	void guiEvent(ofxUIEventArgs &e);
-	
-	vector<ofImage>loadedImages;
-	vector<ofImage>processedImages;
-	string originalFileExtension;
 	
 	ofImage loadedImage;
 	int num_leds;
@@ -30,6 +24,10 @@ private:
 	int led_h;
 	int led_spacing;
 	bool image_loaded;
+	int currentFramerate;
 	string loaded_image_name;
+	
+	ofxButton openButton;
+	ofxIntSlider frameRateSlider;
 	
 };

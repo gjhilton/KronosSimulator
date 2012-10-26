@@ -2,20 +2,20 @@
 
 #define MAX_LEDS 32
 #define UI_HEIGHT 100
-#define UI_BUTTON_NAME_LOAD "LOAD ANIMATION"
 
 void testApp::setup(){
 	
-	ofSetFrameRate(10);
+	currentFramerate = 8;
+	ofSetFrameRate(currentFramerate);
 	
-	// initialise gui
-    gui = new ofxUICanvas(0,ofGetHeight()-UI_HEIGHT,ofGetWidth(),UI_HEIGHT);
-	gui->setFont("GUI/Inconsolata.ttf", false, true, false, 300);
-    gui->setFontSize(OFX_UI_FONT_LARGE, 10);
-	gui->setFontSize(OFX_UI_FONT_MEDIUM, 6);
-    gui->setFontSize(OFX_UI_FONT_SMALL, 4);
-	gui->addLabelButton(UI_BUTTON_NAME_LOAD, false);
-    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
+	// alternative gui
+	int guih = ofGetHeight() - 30;
+	openButton.setup("open animation",300);
+	openButton.setPosition(10,guih);
+	openButton.addListener(this,&testApp::presentFileChooser);
+	frameRateSlider.setup("framerate", currentFramerate, 1, 60);
+	frameRateSlider.setPosition(250,guih);
+	frameRateSlider.addListener(this,&testApp::framerateChanged);
 	
 	ofBackgroundHex(0x000000);
 	image_loaded = false;
@@ -24,6 +24,12 @@ void testApp::setup(){
 void testApp::update(){}
 
 void testApp::draw() {
+	
+	// draw gui
+	openButton.draw();
+	frameRateSlider.draw();
+	
+	// draw animation
 	if (image_loaded){
 		
 		// draw info string
@@ -34,7 +40,7 @@ void testApp::draw() {
 		<< "using " << num_leds << " leds. "
 		<< "frame " << current_frame << "/" << num_frames;
 		ofSetHexColor(0x666666);
-		ofDrawBitmapString(s.str(), 40, 40);
+		ofDrawBitmapString(s.str(), 10, 20);
 		
 		
 		ofPushMatrix();
@@ -78,15 +84,13 @@ void testApp::processOpenFileSelection(ofFileDialogResult openFileResult){
 	
 }
 
-void testApp::presentFileChooser(){
+void testApp::presentFileChooser(bool & pressed){
+	if (pressed == false) return;
 	ofFileDialogResult openFileResult= ofSystemLoadDialog("Select a jpg or png");
 	processOpenFileSelection(openFileResult);
 }
 
-void testApp::guiEvent(ofxUIEventArgs &e) {
-	string name = e.widget->getName();
-	if(name == UI_BUTTON_NAME_LOAD) {
-        ofxUILabelButton *button = (ofxUILabelButton *) e.widget;
-		if (button->getValue()==0) presentFileChooser();
-	}
+void testApp::framerateChanged(int & rate){
+	ofSetFrameRate(rate);
+
 }
