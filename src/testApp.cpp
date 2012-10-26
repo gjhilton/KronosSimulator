@@ -1,6 +1,6 @@
 #include "testApp.h"
 
-#define MAX_LEDS 32
+#define MAX_LEDS 96
 #define UI_HEIGHT 100
 
 void testApp::setup(){
@@ -44,10 +44,10 @@ void testApp::draw() {
 		
 		
 		ofPushMatrix();
-		ofTranslate(40, 80);
+		ofTranslate(10, 80);
 	
 		for(int pixel = 0; pixel < num_leds; pixel++) {
-			ofSetColor(loadedImage.getColor(current_frame, pixel));
+			ofSetColor(loadedImage.getColor(pixel,current_frame));
 			ofRect(0,0,led_w,led_h);
 			ofTranslate(led_w + led_spacing, 0);
 		}
@@ -72,10 +72,22 @@ void testApp::processOpenFileSelection(ofFileDialogResult openFileResult){
 			loadedImage.loadImage(openFileResult.getPath());
 			num_leds = loadedImage.getWidth();
 			if (num_leds <= MAX_LEDS){
+				if (num_leds <= 32){
+					led_spacing = 3;
+					led_h = 30;
+					led_w = 30;
+				}
+				if (num_leds > 32){
+					led_spacing = 2;
+					led_h = 16;
+					led_w = 16;
+				}
+				if (num_leds > 64){
+					led_spacing = 1;
+					led_h = 11;
+					led_w = 11;
+				}
 				num_frames = loadedImage.getHeight();
-				led_spacing = 4;
-				led_h = 30;
-				led_w = 30;
 				current_frame = 0;
 				image_loaded = true;
 			}
@@ -92,5 +104,4 @@ void testApp::presentFileChooser(bool & pressed){
 
 void testApp::framerateChanged(int & rate){
 	ofSetFrameRate(rate);
-
 }
