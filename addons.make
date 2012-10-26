@@ -1,4 +1,3 @@
 ofxGui
-ofxOpenCv
-ofxUI
+ofxOsc
 ofxXmlSettings
