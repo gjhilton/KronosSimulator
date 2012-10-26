@@ -1,9 +1,12 @@
 #include "testApp.h"
 
+#define MAX_LEDS 32
 #define UI_HEIGHT 100
-#define UI_BUTTON_NAME_LOAD "LOAD IMAGE"
+#define UI_BUTTON_NAME_LOAD "LOAD ANIMATION"
 
 void testApp::setup(){
+	
+	ofSetFrameRate(10);
 	
 	// initialise gui
     gui = new ofxUICanvas(0,ofGetHeight()-UI_HEIGHT,ofGetWidth(),UI_HEIGHT);
@@ -15,90 +18,61 @@ void testApp::setup(){
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 	
 	ofBackgroundHex(0x000000);
+	image_loaded = false;
 }
 
 void testApp::update(){}
 
-//--------------------------------------------------------------
-void testApp::draw() {	
+void testApp::draw() {
+	if (image_loaded){
+		
+		// draw info string
+		stringstream s;
+		s
+		<< loaded_image_name
+		<< "\n"
+		<< "using " << num_leds << " leds. "
+		<< "frame " << current_frame << "/" << num_frames;
+		ofSetHexColor(0x666666);
+		ofDrawBitmapString(s.str(), 40, 40);
+		
+		
+		ofPushMatrix();
+		ofTranslate(40, 80);
 	
-	for (int i=0; i<loadedImages.size(); i++){
-		loadedImages[i].draw(0, 20);
+		for(int pixel = 0; pixel < num_leds; pixel++) {
+			ofSetColor(loadedImage.getColor(current_frame, pixel));
+			ofRect(0,0,led_w,led_h);
+			ofTranslate(led_w + led_spacing, 0);
+		}
+	
+		ofPopMatrix();
+	
+		// wind on counter
+		current_frame++;
+		if (current_frame >= num_frames) current_frame = 0;
 	}
-	
-	for (int i=0; i<processedImages.size(); i++){
-		processedImages[i].draw(processedImages[i].getWidth(), 20);
-	}
-	
 }
-
-//Sort function for stl::sort http://www.cplusplus.com/reference/algorithm/sort/
-bool sortColorFunction (ofColor i,ofColor j) { 
-	return (i.getBrightness()<j.getBrightness()); 
-}
-
 
 void testApp::processOpenFileSelection(ofFileDialogResult openFileResult){
-	
-	ofLogVerbose("getName(): "  + openFileResult.getName());
-	ofLogVerbose("getPath(): "  + openFileResult.getPath());
 	
 	ofFile file (openFileResult.getPath()); 
 	
 	if (file.exists()){
-		//Limiting this example to one image so we delete previous ones
-		processedImages.clear();
-		loadedImages.clear();
-		
-		ofLogVerbose("The file exists - now checking the type via file extension");
+		image_loaded = false;
+		loaded_image_name = file.getFileName();
 		string fileExtension = ofToUpper(file.getExtension());
-		
-		//We only want images
 		if (fileExtension == "JPG" || fileExtension == "PNG") {
-			
-			//Save the file extension to use when we save out
-			originalFileExtension = fileExtension;
-			
-			//Load the selected image
-			ofImage image;
-			image.loadImage(openFileResult.getPath());
-			if (image.getWidth()>ofGetWidth() || image.getHeight() > ofGetHeight()) 
-			{
-				image.resize(image.getWidth()/2, image.getHeight()/2);
+			loadedImage.loadImage(openFileResult.getPath());
+			num_leds = loadedImage.getWidth();
+			if (num_leds <= MAX_LEDS){
+				num_frames = loadedImage.getHeight();
+				led_spacing = 4;
+				led_h = 30;
+				led_w = 30;
+				current_frame = 0;
+				image_loaded = true;
 			}
-			loadedImages.push_back(image);
-			
-			//Make some short variables 
-			int w = image.getWidth();
-			int h = image.getHeight();
-			
-			//Make a new image to save manipulation by copying the source
-			ofImage processedImage = image;
-			
-			//Walk through the pixels
-			for (int y = 0; y < h; y++){
-				
-				//Create a vector to store and sort the colors
-				vector<ofColor> colorsToSort;
-				
-				for (int x = 0; x < w; x++){
-					
-					//Capture the colors for the row
-					ofColor color = image.getColor(x, y); 
-					colorsToSort.push_back(color);					
-				}
-				
-				//Sort the colors for the row
-				sort (colorsToSort.begin(), colorsToSort.end(), sortColorFunction);
-				
-				for (int x = 0; x < w; x++)
-				{
-					//Put the sorted colors back in the new image
-					processedImage.setColor(x, y, colorsToSort[x]);
-				}
-			}
-			//Store the processed image
-			processedImages.push_back(processedImage);
 		}
 	}
 	

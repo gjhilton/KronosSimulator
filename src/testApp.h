@@ -22,4 +22,14 @@ private:
 	vector<ofImage>processedImages;
 	string originalFileExtension;
 	
+	ofImage loadedImage;
+	int num_leds;
+	int num_frames;
+	int current_frame;
+	int led_w;
+	int led_h;
+	int led_spacing;
+	bool image_loaded;
+	string loaded_image_name;
+	
 };

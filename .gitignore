@@ -2,3 +2,8 @@
 .DS_Store
 
 /bin/KronosSimulatorDebug.app/*
+.DS_Store
+
+*.xcbkptlist
+
+bin/data/animation.jpg
