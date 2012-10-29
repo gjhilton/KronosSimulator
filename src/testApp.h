@@ -16,8 +16,7 @@ private:
 	void onOpenClicked(bool & pressed);
 	void onSaveClicked(bool & pressed);
 	void processOpenFileSelection(ofFileDialogResult openFileResult);
-	//void saveFileToSelection(ofFileDialogResult saveFileResult);
-	void saveFileToSelection();
+	void saveFileToSelection(ofFileDialogResult saveFileResult);
 	
 	ofImage loadedImage;
 	int num_leds;

@@ -8,7 +8,6 @@ void testApp::setup(){
 	currentFramerate = 8;
 	ofSetFrameRate(currentFramerate);
 	
-	// alternative gui
 	int guih = ofGetHeight() - 30;
 	openButton.setup("open animation",300);
 	openButton.setPosition(10,guih);
@@ -24,8 +23,6 @@ void testApp::setup(){
 	
 	ofBackgroundHex(0x000000);
 	image_loaded = false;
-	
-	saveFileToSelection();
 }
 
 void testApp::update(){}
@@ -70,32 +67,23 @@ void testApp::draw() {
 	}
 }
 
-bool ofShader::setupShaderFromFile(GLenum type, string filename) {
-	ofBuffer buffer = ofBufferFromFile(filename);
-	if(buffer.size()) {
-		return setupShaderFromSource(type, buffer.getText());
-	} else {
-		ofLog(OF_LOG_ERROR, "Could not load shader of type " + nameForType(type) + " from file " + filename);
-		return false;
-	}
-}
-
-void testApp::saveFileToSelection(){
-//void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
+void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
 	
 	// step 1 - build a string representation of the image data
 	string imgdata = "/*           IMAGE DATA           */";
+	// TODO
 	
 	// step 2 - load a boilerplate arduino sketch
 	
 	ofBuffer buffer = ofBufferFromFile("arduino_template/arduino_template.ino");
 	if(buffer.size()) {
 		string arduino_template = buffer.getText();
-		ofLog(OF_LOG_WARNING, "SUCCESS!");
+		
 		// step 3 - insert the image data into the arduino sketch
-	
+		// TODO
+		
 		// step 4 - save the file
-		// ofFile file (saveFileResult.getPath());
+		ofBufferToFile(saveFileResult.getPath(), buffer);
 	} else {
 		ofLog(OF_LOG_ERROR, "Save failed: couldn't open template file");
 	}
@@ -145,8 +133,8 @@ void testApp::onOpenClicked(bool & pressed){
 
 void testApp::onSaveClicked(bool & pressed){
 	if (pressed == false) return;
-	ofFileDialogResult openFileResult= ofSystemLoadDialog("Select a jpg or png");
-	processOpenFileSelection(openFileResult);
+	ofFileDialogResult saveFileResult = ofSystemSaveDialog("saved.ino", "Save to file");
+	if (saveFileResult.bSuccess) saveFileToSelection(saveFileResult);
 }
 
 void testApp::onFramerateChanged(int & rate){
