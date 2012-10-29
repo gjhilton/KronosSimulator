@@ -76,25 +76,19 @@ void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
 	s
 	<< TEMPLATE_HEADER << "\n"
 	<< "// file: " << loaded_image_name << "\n"
-	<< "// generated at " << ofGetTimestampString() << "\n"
-	<< "\n";
-	
-	// individual frames as array
-	for(int frame = 0; frame < num_frames; frame++) {
-		s << "int frame_" << ofToString(frame) << "[]={";
-		for(int pixel = 0; pixel < num_leds; pixel++) {
-			ofColor c = loadedImage.getColor(pixel,frame);
-			if (pixel != 0) s << ",";
-			s << ofToString(c.getHex());
-		}
-		s << "}; // frame " << ofToString(frame) << "\n";
-	}
-	
-	// array of all frames
-	s << "\nint* frames[]={";
+	<< "// generated at " << ofGetTimestampString() << "\n\n\n"
+	<< "#define N_FRAMES " << num_frames << "\n"
+	<< "#define N_PIXELS " << num_leds << "\n\n"
+	<< "const int frames[N_FRAMES][N_PIXELS] = {";
 	for(int frame = 0; frame < num_frames; frame++) {
 		if (frame != 0) s << ",";
-		s << "frame_" << ofToString(frame);
+		s << "{";
+		for(int pixel = 0; pixel < num_leds; pixel++) {
+			if (pixel != 0) s << ",";
+			ofColor c = loadedImage.getColor(pixel,frame);
+			s << ofToString(c.getHex());
+		}
+		s << "}";
 	}
 	s << "}; \n\n";
 	
