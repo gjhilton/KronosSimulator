@@ -76,8 +76,27 @@ void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
 	s
 	<< TEMPLATE_HEADER << "\n"
 	<< "// file: " << loaded_image_name << "\n"
-	<< "// generated at " << ofGetTimestampString() << "\n";
-	// TODO
+	<< "// generated at " << ofGetTimestampString() << "\n"
+	<< "\n";
+	
+	// individual frames as array
+	for(int frame = 0; frame < num_frames; frame++) {
+		s << "int frame_" << ofToString(frame) << "[]={";
+		for(int pixel = 0; pixel < num_leds; pixel++) {
+			ofColor c = loadedImage.getColor(pixel,frame);
+			if (pixel != 0) s << ",";
+			s << ofToString(c.getHex());
+		}
+		s << "}; // frame " << ofToString(frame) << "\n";
+	}
+	
+	// array of all frames
+	s << "\nint* frames[]={";
+	for(int frame = 0; frame < num_frames; frame++) {
+		if (frame != 0) s << ",";
+		s << "frame_" << ofToString(frame);
+	}
+	s << "}; \n\n";
 	
 	// step 2 - load a boilerplate arduino sketch
 	ofBuffer buffer = ofBufferFromFile("arduino_template/arduino_template.ino");
