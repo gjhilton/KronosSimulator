@@ -2,6 +2,7 @@
 
 #define MAX_LEDS 96
 #define UI_HEIGHT 100
+#define TEMPLATE_PLACEHOLDER "$INSERT_IMAGE_DATA_HERE$"
 
 void testApp::setup(){
 	
@@ -74,18 +75,14 @@ void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
 	// TODO
 	
 	// step 2 - load a boilerplate arduino sketch
-	
 	ofBuffer buffer = ofBufferFromFile("arduino_template/arduino_template.ino");
 	if(buffer.size()) {
-		string arduino_template = buffer.getText();
-		
 		// step 3 - insert the image data into the arduino sketch
-		// TODO
-		
+		string arduino_template = buffer.getText();
+		ofStringReplace(arduino_template,TEMPLATE_PLACEHOLDER,imgdata);
+		buffer.set(arduino_template);
 		// step 4 - save the file
 		ofBufferToFile(saveFileResult.getPath(), buffer);
-	} else {
-		ofLog(OF_LOG_ERROR, "Save failed: couldn't open template file");
 	}
 }
 	
