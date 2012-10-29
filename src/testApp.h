@@ -15,6 +15,8 @@ private:
 	void framerateChanged(int & rate);
 	void presentFileChooser(bool & pressed);
 	void processOpenFileSelection(ofFileDialogResult openFileResult);
+	//void saveFileToSelection(ofFileDialogResult saveFileResult);
+	void saveFileToSelection();
 	
 	ofImage loadedImage;
 	int num_leds;
