@@ -12,10 +12,15 @@ void testApp::setup(){
 	int guih = ofGetHeight() - 30;
 	openButton.setup("open animation",300);
 	openButton.setPosition(10,guih);
-	openButton.addListener(this,&testApp::presentFileChooser);
+	openButton.addListener(this,&testApp::onOpenClicked);
+
+	saveButton.setup("save",300);
+	saveButton.setPosition(150,guih);
+	saveButton.addListener(this,&testApp::onSaveClicked);
+	
 	frameRateSlider.setup("framerate", currentFramerate, 1, 60);
-	frameRateSlider.setPosition(250,guih);
-	frameRateSlider.addListener(this,&testApp::framerateChanged);
+	frameRateSlider.setPosition(500,guih);
+	frameRateSlider.addListener(this,&testApp::onFramerateChanged);
 	
 	ofBackgroundHex(0x000000);
 	image_loaded = false;
@@ -27,12 +32,15 @@ void testApp::update(){}
 
 void testApp::draw() {
 	
-	// draw gui
+	// draw gui - persistent
 	openButton.draw();
-	frameRateSlider.draw();
 	
 	// draw animation
 	if (image_loaded){
+		
+		// draw gui - widgets shown only with anim loaded
+		saveButton.draw();
+		frameRateSlider.draw();
 		
 		// draw info string
 		stringstream s;
@@ -87,7 +95,7 @@ void testApp::saveFileToSelection(){
 		// step 3 - insert the image data into the arduino sketch
 	
 		// step 4 - save the file
-		//ofFile file (saveFileResult.getPath());
+		// ofFile file (saveFileResult.getPath());
 	} else {
 		ofLog(OF_LOG_ERROR, "Save failed: couldn't open template file");
 	}
@@ -129,12 +137,18 @@ void testApp::processOpenFileSelection(ofFileDialogResult openFileResult){
 	
 }
 
-void testApp::presentFileChooser(bool & pressed){
+void testApp::onOpenClicked(bool & pressed){
 	if (pressed == false) return;
 	ofFileDialogResult openFileResult= ofSystemLoadDialog("Select a jpg or png");
 	processOpenFileSelection(openFileResult);
 }
 
-void testApp::framerateChanged(int & rate){
+void testApp::onSaveClicked(bool & pressed){
+	if (pressed == false) return;
+	ofFileDialogResult openFileResult= ofSystemLoadDialog("Select a jpg or png");
+	processOpenFileSelection(openFileResult);
+}
+
+void testApp::onFramerateChanged(int & rate){
 	ofSetFrameRate(rate);
 }

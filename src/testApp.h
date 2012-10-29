@@ -12,8 +12,9 @@ public:
 	void draw();
 	
 private:
-	void framerateChanged(int & rate);
-	void presentFileChooser(bool & pressed);
+	void onFramerateChanged(int & rate);
+	void onOpenClicked(bool & pressed);
+	void onSaveClicked(bool & pressed);
 	void processOpenFileSelection(ofFileDialogResult openFileResult);
 	//void saveFileToSelection(ofFileDialogResult saveFileResult);
 	void saveFileToSelection();
@@ -29,7 +30,7 @@ private:
 	int currentFramerate;
 	string loaded_image_name;
 	
-	ofxButton openButton;
+	ofxButton saveButton, openButton;
 	ofxIntSlider frameRateSlider;
 	
 };
