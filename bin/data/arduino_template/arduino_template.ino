@@ -22,29 +22,22 @@ void loop() {
   memset(leds, 0, N_PIXELS * 3);
   for(int frame=0; frame<N_FRAMES; frame++){
     for(int pixel=0; pixel<N_PIXELS; pixel++){
-      int colour = frames[frame][pixel];
-      int r = (colour >> 16) & 0xff;
-      int g = (colour >> 8) & 0xff;
-      int b = (colour >> 0) & 0xff;
-      
-      leds[pixel].r = r;
-      leds[pixel].g = g;
-      leds[pixel].b = b;
+      leds[pixel].r = frames[frame][pixel][0];
+      leds[pixel].g = frames[frame][pixel][1];
+      leds[pixel].b = frames[frame][pixel][2];
     }
     FastSPI_LED.show();
-    delay(10);
+    delay(50);
   }  
 }
 
 
 /*
 
-// example image data format
-
-#define N_FRAMES 2
-#define N_PIXELS 4
-
-const int frames[N_FRAMES][N_PIXELS] = {{1,2,3,4},{5,6,7,8}};
+green wire	- pin 13
+red wire	- pin 11
+yellow wire	- v in
+white wire	- gnd
 
 */
 

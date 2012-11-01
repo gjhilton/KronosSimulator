@@ -79,14 +79,19 @@ void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
 	<< "// generated at " << ofGetTimestampString() << "\n\n\n"
 	<< "#define N_FRAMES " << num_frames << "\n"
 	<< "#define N_PIXELS " << num_leds << "\n\n"
-	<< "const int frames[N_FRAMES][N_PIXELS] = {";
+	<< "const char frames[N_FRAMES][N_PIXELS][3] = {";
 	for(int frame = 0; frame < num_frames; frame++) {
 		if (frame != 0) s << ",";
 		s << "{";
 		for(int pixel = 0; pixel < num_leds; pixel++) {
 			if (pixel != 0) s << ",";
 			ofColor c = loadedImage.getColor(pixel,frame);
-			s << ofToString(c.getHex());
+			// int r = 16711680;
+			int r = c.r;
+			int g = c.g;
+			int b = c.b;
+			// s << "pixel " << pixel << " red: " << r << ", green: " << g << ", blue: " << g << "\n";
+			s << "{" << r << "," << g << "," << b << "}";
 		}
 		s << "}";
 	}
