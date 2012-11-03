@@ -1,35 +1,71 @@
+#include <stdio.h>
+
+int (*animation_ptr)();
+
+struct colour {
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+};
+
 /*
- 
-quick test app as example of colour conversion
- 
+struct colour red = {255,0,0};
+const struct colour anim[1] = {{255,0,0}};
+struct colour frames[1][1];
+
+struct colour colours[1];
+
+struct colour *leds;*/
+
+/*
+struct colour numbers[1][1];
+struct frame{
+	struct colour pixels[1];
+};
+
+const struct frame f1 = {{255,0,0}};
+const struct frame* sequence[1] = {&f1};
+
+
+struct frame animation[1] = {{{255,0,0}}};
 */
 
 
-#include <stdio.h>
+/*
+const char frame_0[1] = {255};
+const char* frames[1] = {frame_0};
+*/
 
-#define N_FRAMES 3
-#define N_PIXELS 2
+const struct colour frame_0[1] = {{255,0,0}};
+const struct colour* frames[1] = {frame_0};
+ 
+void init(){
+	//sequence[0] = f1;
+}
 
-const int frames[N_FRAMES][N_PIXELS] = {{16777215,0},{0,16777215},{16777215,0}};
+int animationA() {
+	return 255;
+}
 
-int toHex(int r, int g, int b){
-	return
-	((0xff & (unsigned char) r) << 16) |
-	((0xff & (unsigned char) g) << 8) |
-	((0xff & (unsigned char) b));
+int animationB() {
+	return 255;
+}
+
+typedef int (*fn)();
+int lerp(fn oldAnimation, fn newAnimation){
+	return (*oldAnimation)() + (*newAnimation)() ;
 }
 
 int main(int argc, const char * argv[]){
+
+	//animation_ptr = animationA;
+	//printf("%d",(*animation_ptr)());
 	
-	for(int frame=0; frame<N_FRAMES; frame++){
-		printf("frame %d ----- \n", frame);
-		for(int pixel=0; pixel<N_PIXELS; pixel++){
-			int colour = frames[frame][pixel];
-			int r = (colour >> 16) & 0xff;
-			int g = (colour >> 8) & 0xff;
-			int b = (colour >> 0) & 0xff;
-			printf("pixel %d r:%d g:%d b:%d \n", pixel, r,g,b);
-		}
-	}
+	printf("%hhu\n", frames[0][0].r);
+	
+	//int result = lerp(animationA, animationB);
+	//printf("%d",result);
+	
+	
     return 0;
 }
