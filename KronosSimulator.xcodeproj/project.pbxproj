@@ -105,6 +105,7 @@
 		2fd4b0329909d3527f0034948840df14 /* UdpSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = UdpSocket.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/UdpSocket.h; sourceTree = SOURCE_ROOT; };
 		3B096A37163E7AEB0018DFDA /* arduino_template.ino */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = arduino_template.ino; path = bin/data/arduino_template/arduino_template.ino; sourceTree = "<group>"; };
 		3B096A55163E80950018DFDA /* colour_example.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = colour_example.xcodeproj; path = colour_example/colour_example.xcodeproj; sourceTree = "<group>"; };
+		3B7585431645232600629F9E /* wiring.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wiring.txt; path = hardware/wiring.txt; sourceTree = "<group>"; };
 		3b361208cd4107e479f04e7bce6d93aa /* NetworkingUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = NetworkingUtils.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp; sourceTree = SOURCE_ROOT; };
 		444657a12e59d0ed86981498fccd5fcc /* TimerListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimerListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/TimerListener.h; sourceTree = SOURCE_ROOT; };
 		48974f980f51769171d0b2f5e519dd28 /* IpEndpointName.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = IpEndpointName.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.h; sourceTree = SOURCE_ROOT; };
@@ -240,6 +241,7 @@
 			children = (
 				3B096A55163E80950018DFDA /* colour_example.xcodeproj */,
 				3B096A37163E7AEB0018DFDA /* arduino_template.ino */,
+				3B7585431645232600629F9E /* wiring.txt */,
 			);
 			name = resources;
 			sourceTree = "<group>";

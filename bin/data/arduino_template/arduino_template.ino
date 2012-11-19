@@ -2,10 +2,14 @@
 
 #define PIN 4
 
-$INSERT_IMAGE_DATA_HERE$
-
-struct CRGB { unsigned char r; unsigned char g; unsigned char b; };
+struct CRGB { 
+	unsigned char r; 
+	unsigned char g; 
+	unsigned char b;
+};
 struct CRGB *leds;
+
+$INSERT_IMAGE_DATA_HERE$
 
 void setup() {
   FastSPI_LED.setLeds(N_PIXELS);
@@ -22,30 +26,11 @@ void loop() {
   memset(leds, 0, N_PIXELS * 3);
   for(int frame=0; frame<N_FRAMES; frame++){
     for(int pixel=0; pixel<N_PIXELS; pixel++){
-      leds[pixel].r = frames[frame][pixel][0];
-      leds[pixel].g = frames[frame][pixel][1];
-      leds[pixel].b = frames[frame][pixel][2];
+      leds[pixel].r = frames[frame][pixel].r;
+      leds[pixel].g = frames[frame][pixel].g;
+      leds[pixel].b = frames[frame][pixel].b;
     }
     FastSPI_LED.show();
     delay(50);
   }  
 }
-
-
-/*
-
-green wire	- pin 13
-red wire	- pin 11
-yellow wire	- v in
-white wire	- gnd
-
-*/
-
-/*
-int toHex(int r, int g, int b){
-	return
-	((0xff & (unsigned char) r) << 16) |
-	((0xff & (unsigned char) g) << 8) |
-	((0xff & (unsigned char) b));
-}
-*/

@@ -76,26 +76,34 @@ void testApp::saveFileToSelection(ofFileDialogResult saveFileResult){
 	s
 	<< TEMPLATE_HEADER << "\n"
 	<< "// file: " << loaded_image_name << "\n"
-	<< "// generated at " << ofGetTimestampString() << "\n\n\n"
+	<< "// generated at " << ofGetTimestampString() << "\n\n"
 	<< "#define N_FRAMES " << num_frames << "\n"
-	<< "#define N_PIXELS " << num_leds << "\n\n"
-	<< "const char frames[N_FRAMES][N_PIXELS][3] = {";
-	for(int frame = 0; frame < num_frames; frame++) {
-		if (frame != 0) s << ",";
-		s << "{";
-		for(int pixel = 0; pixel < num_leds; pixel++) {
-			if (pixel != 0) s << ",";
-			ofColor c = loadedImage.getColor(pixel,frame);
-			// int r = 16711680;
+	<< "#define N_PIXELS " << num_leds << "\n\n";
+	
+	// eg const struct CRGB frame_0[1] = {{255,0,0}};
+	for (int f=0; f<num_frames; f++){
+		s << "const struct CRGB " << loaded_image_name << "_frame_" << f << "[" << num_leds << "] = {";
+		for (int l=0; l<num_leds;l++){
+			if (l != 0) s << ",";
+			ofColor c = loadedImage.getColor(l,f);
 			int r = c.r;
 			int g = c.g;
 			int b = c.b;
-			// s << "pixel " << pixel << " red: " << r << ", green: " << g << ", blue: " << g << "\n";
 			s << "{" << r << "," << g << "," << b << "}";
 		}
-		s << "}";
+		s << "};\n";
 	}
-	s << "}; \n\n";
+	
+	// eg const struct CRGB* frames[1] = {frame_0}
+	// s << "const struct CRGB*" << loaded_image_name << "_frames[" << num_frames << "] = {";
+	s << "const struct CRGB* frames[" << num_frames << "] = {";
+	for (int f=0; f<num_frames; f++){
+		if (f != 0) s << ",";
+		s << loaded_image_name << "_frame_" << f;
+	}
+	s << "};\n\n";
+	
+	s << "// end of generated image data\n";
 	
 	// step 2 - load a boilerplate arduino sketch
 	ofBuffer buffer = ofBufferFromFile("arduino_template/arduino_template.ino");
@@ -115,7 +123,7 @@ void testApp::processOpenFileSelection(ofFileDialogResult openFileResult){
 	
 	if (file.exists()){
 		image_loaded = false;
-		loaded_image_name = file.getFileName();
+		loaded_image_name = file.getBaseName();
 		string fileExtension = ofToUpper(file.getExtension());
 		if (fileExtension == "JPG" || fileExtension == "PNG") {
 			loadedImage.loadImage(openFileResult.getPath());

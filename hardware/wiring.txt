@@ -1,0 +1,4 @@
+green wire	- pin 13
+red wire	- pin 11
+yellow wire	- v in
+white wire	- gnd
